@@ -110,6 +110,15 @@ export class LinkedList {
   }
 
   toString() {
-    return "";
+    if (this.isEmptyList()) return "";
+
+    const getSequence = (list) => {
+      if (!list.nextNode) {
+        return `( ${list.value} ) -> null`;
+      }
+      return `( ${list.value} ) -> ${getSequence(list.nextNode)}`;
+    };
+
+    return getSequence(this.list);
   }
 }

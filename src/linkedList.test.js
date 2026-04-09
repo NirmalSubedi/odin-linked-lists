@@ -341,7 +341,7 @@ describe("findIndex method", () => {
     list = new LinkedList();
   });
 
-  it("Throws Error if search value if undefined", () => {
+  it("Throws Error if search value is undefined", () => {
     expect(() => list.findIndex()).toThrow(Error);
     expect(() => list.findIndex(undefined)).toThrow(Error);
   });
@@ -384,5 +384,22 @@ describe("toString method", () => {
 
   it("Returns empty string for empty list", () => {
     expect(list.toString()).toBe("");
+  });
+
+  it("Returns string for sequence of 1", () => {
+    list.prepend("apple");
+    expect(list.toString()).toBe("( apple ) -> null");
+  });
+
+  it("Returns string for sequence of 2", () => {
+    list.prepend("banana");
+    expect(list.toString()).toBe("( banana ) -> ( apple ) -> null");
+  });
+
+  it("Returns string for sequence of 3", () => {
+    list.prepend("cherry");
+    expect(list.toString()).toBe(
+      "( cherry ) -> ( banana ) -> ( apple ) -> null"
+    );
   });
 });
