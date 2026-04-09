@@ -436,6 +436,7 @@ describe("insertAt method", () => {
 
   it("Returns RangeError for index above list size", () => {
     expect(() => list.insertAt(1)).toThrow(RangeError);
+    expect(() => list.insertAt(0)).not.toThrow(RangeError);
   });
 
   it("Inserts a node in empty list", () => {
@@ -499,5 +500,70 @@ describe("insertAt method", () => {
     expect(list.toString()).toBe(
       "( apple ) -> ( banana ) -> ( cherry ) -> ( durian ) -> null"
     );
+  });
+});
+
+describe("removeAt method", () => {
+  it("removeAt method exists", () => {
+    expect(Object.hasOwn(LinkedList.prototype, "removeAt")).toBe(true);
+    expect(typeof LinkedList.prototype.removeAt).toBe("function");
+  });
+
+  let list;
+  beforeEach(() => {
+    list = new LinkedList();
+  });
+
+  it("Throws TypeError for non-integer index", () => {
+    expect(() => list.removeAt()).toThrow(TypeError);
+    expect(() => list.removeAt("")).toThrow(TypeError);
+    expect(() => list.removeAt(1n)).toThrow(TypeError);
+    expect(() => list.removeAt([])).toThrow(TypeError);
+    expect(() => list.removeAt({})).toThrow(TypeError);
+    expect(() => list.removeAt(false)).toThrow(TypeError);
+    expect(() => list.removeAt(() => {})).toThrow(TypeError);
+    expect(() => list.removeAt(null)).toThrow(TypeError);
+    expect(() => list.removeAt(NaN)).toThrow(TypeError);
+    expect(() => list.removeAt(Infinity)).toThrow(TypeError);
+    expect(() => list.removeAt(-Infinity)).toThrow(TypeError);
+  });
+
+  it("Throws RangeError for below zero index", () => {
+    expect(() => list.removeAt(-1)).toThrow(RangeError);
+  });
+
+  it("Throws RangeError for index above list size", () => {
+    expect(() => list.removeAt(1)).toThrow(RangeError);
+    expect(() => list.removeAt(0)).not.toThrow(RangeError);
+  });
+
+  it("Does nothing if list is empty", () => {
+    list.removeAt(0);
+    expect(list.list).toEqual({ value: null, nextNode: null });
+  });
+
+  it("Removes node at beginning of list", () => {
+    list.append("apple");
+    list.append("banana");
+    list.removeAt(0);
+
+    expect(list.toString()).toBe("( banana ) -> null");
+  });
+
+  it("Removes node between two nodes", () => {
+    list.append("apple");
+    list.append("banana");
+    list.append("cherry");
+    list.removeAt(1);
+
+    expect(list.toString()).toBe("( apple ) -> ( cherry ) -> null");
+  });
+
+  it("Removes node at end of list", () => {
+    list.append("apple");
+    list.append("banana");
+    list.removeAt(1);
+
+    expect(list.toString()).toBe("( apple ) -> null");
   });
 });

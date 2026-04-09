@@ -135,4 +135,28 @@ export class LinkedList {
 
     goToIndex(this.list);
   }
+
+  removeAt(targetIndex) {
+    if (!Number.isInteger(targetIndex))
+      throw new TypeError("Index must be an integer.");
+    if (targetIndex < 0 || targetIndex > this.size())
+      throw new RangeError("Index is out of bound.");
+
+    const goToIndex = (currentNode, leftNode = null, currentIndex = 0) => {
+      if (this.#isEmptyList()) return;
+      if (currentIndex === targetIndex) {
+        if (leftNode === null) {
+          this.list = currentNode.nextNode;
+        } else {
+          leftNode.nextNode = currentNode.nextNode;
+        }
+        return;
+      }
+      if (currentNode === null) return;
+
+      goToIndex(currentNode.nextNode, currentNode, currentIndex + 1);
+    };
+
+    goToIndex(this.list);
+  }
 }
