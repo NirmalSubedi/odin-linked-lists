@@ -1,7 +1,7 @@
 {
   "name": "linked-lists",
   "version": "1.0.0",
-  "description": "Linked list data structure implementation practice.",
+  "description": "Singly Linked list implementation.",
   "main": "index.js",
   "scripts": {
     "test": "jest",
