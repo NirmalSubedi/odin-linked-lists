@@ -17,7 +17,8 @@ describe("LinkedList", () => {
   });
 
   it("Default list is empty node", () => {
-    expect(new LinkedList().list).toEqual(new Node());
+    const emptyNode = { value: null, nextNode: null };
+    expect(new LinkedList().list).toEqual(emptyNode);
   });
 });
 
