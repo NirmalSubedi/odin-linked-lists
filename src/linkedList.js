@@ -14,14 +14,8 @@ export class LinkedList {
 
   append(value) {
     const addToEnd = (list) => {
-      if (this.#isEmptyList()) {
-        list.value = value;
-        return;
-      }
-      if (!list.nextNode) {
-        list.nextNode = new Node(value);
-        return;
-      }
+      if (this.#isEmptyList()) return (list.value = value);
+      if (!list.nextNode) return (list.nextNode = new Node(value));
       addToEnd(list.nextNode);
     };
 
@@ -32,11 +26,10 @@ export class LinkedList {
   prepend(value) {
     if (this.#isEmptyList()) {
       this.list.value = value;
-      return this;
+    } else {
+      const node = new Node(value, this.list);
+      this.list = node;
     }
-
-    const node = new Node(value, this.list);
-    this.list = node;
 
     return this;
   }
