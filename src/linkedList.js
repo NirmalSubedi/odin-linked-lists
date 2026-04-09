@@ -7,15 +7,15 @@ export class Node {
 
 export class LinkedList {
   list = new Node();
-  nodes = 0;
+  #nodes = 0;
 
-  isEmptyList() {
+  #isEmptyList() {
     return this.list.value === null;
   }
 
   append(value) {
     const addToEnd = (list) => {
-      if (this.isEmptyList()) {
+      if (this.#isEmptyList()) {
         list.value = value;
         return;
       }
@@ -27,26 +27,26 @@ export class LinkedList {
     };
 
     addToEnd(this.list);
-    this.nodes += 1;
+    this.#nodes += 1;
     return this;
   }
 
   prepend(value) {
-    if (this.isEmptyList()) {
+    if (this.#isEmptyList()) {
       this.list.value = value;
-      this.nodes = 1;
+      this.#nodes = 1;
       return this;
     }
 
     const node = new Node(value, this.list);
     this.list = node;
-    this.nodes += 1;
+    this.#nodes += 1;
 
     return this;
   }
 
   size() {
-    return this.nodes;
+    return this.#nodes;
   }
 
   head() {
@@ -60,7 +60,7 @@ export class LinkedList {
 
     let currentIndex = -1;
     const getValue = (list) => {
-      if (this.isEmptyList()) return;
+      if (this.#isEmptyList()) return;
       currentIndex += 1;
       if (currentIndex === searchIndex) return list.value;
       if (list.nextNode) return getValue(list.nextNode);
@@ -70,13 +70,13 @@ export class LinkedList {
   }
 
   pop() {
-    if (this.isEmptyList()) return;
+    if (this.#isEmptyList()) return;
 
     const removedNode = this.list;
     const hasNextNode = this.list.nextNode !== null;
 
     this.list = hasNextNode ? this.list.nextNode : new Node();
-    this.nodes -= 1;
+    this.#nodes -= 1;
 
     return removedNode.value;
   }
@@ -96,7 +96,7 @@ export class LinkedList {
       throw new Error("Search value not specified.");
 
     let currentIndex = -1;
-    if (this.isEmptyList()) return currentIndex;
+    if (this.#isEmptyList()) return currentIndex;
 
     const getIndex = (list) => {
       currentIndex += 1;
@@ -110,7 +110,7 @@ export class LinkedList {
   }
 
   toString() {
-    if (this.isEmptyList()) return "";
+    if (this.#isEmptyList()) return "";
 
     const getSequence = (list) => {
       if (!list.nextNode) {
