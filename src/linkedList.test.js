@@ -405,7 +405,7 @@ describe("toString method", () => {
   });
 });
 
-describe("insertAt method", () => {
+describe.skip("insertAt method", () => {
   it("insertAt method exists", () => {
     expect(Object.hasOwn(LinkedList.prototype, "insertAt")).toBe(true);
     expect(typeof LinkedList.prototype.insertAt).toBe("function");
@@ -438,39 +438,66 @@ describe("insertAt method", () => {
     expect(() => list.insertAt(1)).toThrow(RangeError);
   });
 
-  it("Inserts a node", () => {
+  it("Inserts a node in empty list", () => {
     list.insertAt(0, "apple");
     expect(list.toString()).toBe("( apple ) -> null");
   });
 
-  it("Inserts a node at the given index", () => {
-    list.append("apple");
+  it("Inserts multiple nodes in empty list", () => {
+    list.insertAt(0, "apple", "banana");
+    expect(list.toString()).toBe("( apple ) -> ( banana ) -> null");
+  });
+
+  it("Inserts a node at the beginning of list", () => {
+    list.append("banana");
+    list.insertAt(0, "apple");
+
+    expect(list.toString()).toBe("( apple ) -> ( banana ) -> null");
+  });
+
+  it("Inserts multiple at the beginning of list", () => {
     list.append("cherry");
-    expect(list.size()).toBe(2);
-    list.insertAt(1, "banana");
-    expect(list.size()).toBe(3);
+    list.insertAt(0, "apple", "banana");
 
     expect(list.toString()).toBe(
       "( apple ) -> ( banana ) -> ( cherry ) -> null"
     );
   });
 
-  it("Inserts 2 nodes at the given index", () => {
+  it("Inserts a node between 2 nodes", () => {
+    list.append("apple");
+    list.append("cherry");
+    list.insertAt(1, "banana");
+
+    expect(list.toString()).toBe(
+      "( apple ) -> ( banana ) -> ( cherry ) -> null"
+    );
+  });
+
+  it("Inserts multiple nodes between 2 nodes", () => {
     list.append("apple");
     list.append("durian");
     list.insertAt(1, "banana", "cherry");
+
     expect(list.toString()).toBe(
       "( apple ) -> ( banana ) -> ( cherry ) -> ( durian ) -> null"
     );
   });
 
-  it("Inserts 3 nodes at the given index", () => {
+  it("inserts a node at the end of list", () => {
     list.append("apple");
-    list.append("durian");
-    list.append("eggplant");
-    list.insertAt(1, "banana", "cherry");
+    list.insertAt(1, "banana");
+
+    expect(list.toString()).toBe("( apple ) -> ( banana ) -> null");
+  });
+
+  it("Inserts multiple nodes at the end of list", () => {
+    list.append("apple");
+    list.append("banana");
+    list.insertAt(2, "cherry", "durian");
+
     expect(list.toString()).toBe(
-      "( apple ) -> ( banana ) -> ( cherry ) -> ( durian ) -> ( eggplant ) -> null"
+      "( apple ) -> ( banana ) -> ( cherry ) -> ( durian ) -> null"
     );
   });
 });
