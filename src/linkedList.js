@@ -121,4 +121,37 @@ export class LinkedList {
 
     return getSequence(this.list);
   }
+
+  insertAt(targetIndex, ...values) {
+    if (!Number.isInteger(targetIndex))
+      throw new TypeError("Target index should be an integer.");
+    if (targetIndex < 0 || targetIndex > this.size())
+      throw new RangeError("Target index is out of bound.");
+
+    if (this.#isEmptyList()) {
+      values.forEach((value) => {
+        this.append(value);
+      });
+      return;
+    }
+
+    let currentIndex = 0;
+    const goToIndex = (currentNode, previousNode = null) => {
+      if (currentIndex === targetIndex) {
+        let latestNode;
+        values.forEach((value) => {
+          latestNode = new Node(value);
+          previousNode.nextNode = latestNode;
+          previousNode = latestNode;
+        });
+        latestNode.nextNode = currentNode;
+        return;
+      }
+
+      currentIndex += 1;
+      goToIndex(currentNode.nextNode, currentNode);
+    };
+
+    goToIndex(this.list);
+  }
 }

@@ -404,3 +404,71 @@ describe("toString method", () => {
     );
   });
 });
+
+describe("insertAt method", () => {
+  it("insertAt method exists", () => {
+    expect(Object.hasOwn(LinkedList.prototype, "insertAt")).toBe(true);
+    expect(typeof LinkedList.prototype.insertAt).toBe("function");
+  });
+
+  let list;
+  beforeEach(() => {
+    list = new LinkedList();
+  });
+
+  it("Returns TypeError for non-integer index", () => {
+    expect(() => list.insertAt()).toThrow(TypeError);
+    expect(() => list.insertAt("")).toThrow(TypeError);
+    expect(() => list.insertAt(1n)).toThrow(TypeError);
+    expect(() => list.insertAt(true)).toThrow(TypeError);
+    expect(() => list.insertAt(null)).toThrow(TypeError);
+    expect(() => list.insertAt({})).toThrow(TypeError);
+    expect(() => list.insertAt([])).toThrow(TypeError);
+    expect(() => list.insertAt(() => {})).toThrow(TypeError);
+    expect(() => list.insertAt(NaN)).toThrow(TypeError);
+    expect(() => list.insertAt(Infinity)).toThrow(TypeError);
+    expect(() => list.insertAt(-Infinity)).toThrow(TypeError);
+  });
+
+  it("Returns RangeError for index below zero", () => {
+    expect(() => list.insertAt(-1)).toThrow(RangeError);
+  });
+
+  it("Returns RangeError for index above list size", () => {
+    expect(() => list.insertAt(1)).toThrow(RangeError);
+  });
+
+  it("Inserts a node", () => {
+    list.insertAt(0, "apple");
+    expect(list.toString()).toBe("( apple ) -> null");
+  });
+
+  it("Inserts a node at the given index", () => {
+    list.append("apple");
+    list.append("cherry");
+    list.insertAt(1, "banana");
+
+    expect(list.toString()).toBe(
+      "( apple ) -> ( banana ) -> ( cherry ) -> null"
+    );
+  });
+
+  it("Inserts 2 nodes at the given index", () => {
+    list.append("apple");
+    list.append("durian");
+    list.insertAt(1, "banana", "cherry");
+    expect(list.toString()).toBe(
+      "( apple ) -> ( banana ) -> ( cherry ) -> ( durian ) -> null"
+    );
+  });
+
+  it("Inserts 3 nodes at the given index", () => {
+    list.append("apple");
+    list.append("durian");
+    list.append("eggplant");
+    list.insertAt(1, "banana", "cherry");
+    expect(list.toString()).toBe(
+      "( apple ) -> ( banana ) -> ( cherry ) -> ( durian ) -> ( eggplant ) -> null"
+    );
+  });
+});
