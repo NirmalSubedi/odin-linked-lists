@@ -446,7 +446,9 @@ describe("insertAt method", () => {
   it("Inserts a node at the given index", () => {
     list.append("apple");
     list.append("cherry");
+    expect(list.size()).toBe(2);
     list.insertAt(1, "banana");
+    expect(list.size()).toBe(3);
 
     expect(list.toString()).toBe(
       "( apple ) -> ( banana ) -> ( cherry ) -> null"

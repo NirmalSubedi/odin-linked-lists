@@ -43,9 +43,8 @@ export class LinkedList {
 
   size() {
     const count = (list, size = 0) => {
-      if (this.#isEmptyList()) return size;
-      if (!list) return size;
-      return count(list.nextNode, (size += 1));
+      if (this.#isEmptyList() || !list) return size;
+      return count(list.nextNode, size + 1);
     };
     return count(this.list);
   }
@@ -59,12 +58,10 @@ export class LinkedList {
       throw new TypeError("Index is not an integer.");
     if (searchIndex < 0) throw new Error("Index must be positive.");
 
-    let currentIndex = -1;
-    const getValue = (list) => {
-      if (this.#isEmptyList()) return;
-      currentIndex += 1;
+    const getValue = (list, currentIndex = 0) => {
+      if (this.#isEmptyList() || !list) return;
       if (currentIndex === searchIndex) return list.value;
-      if (list.nextNode) return getValue(list.nextNode);
+      return getValue(list.nextNode, currentIndex + 1);
     };
 
     return getValue(this.list);
@@ -83,9 +80,9 @@ export class LinkedList {
 
   contains(searchValue) {
     const checkList = (list) => {
+      if (this.#isEmptyList() || !list) return false;
       if (list.value === searchValue) return true;
-      if (list.nextNode) return checkList(list.nextNode);
-      return false;
+      return checkList(list.nextNode);
     };
 
     return checkList(this.list);
@@ -95,27 +92,19 @@ export class LinkedList {
     if (searchValue === undefined)
       throw new Error("Search value not specified.");
 
-    let currentIndex = -1;
-    if (this.#isEmptyList()) return currentIndex;
-
-    const getIndex = (list) => {
-      currentIndex += 1;
-
+    const getIndex = (list, currentIndex = 0) => {
+      if (this.#isEmptyList() || !list) return -1;
       if (list.value === searchValue) return currentIndex;
-      if (list.nextNode) return getIndex(list.nextNode);
-      return -1;
+      return getIndex(list.nextNode, currentIndex + 1);
     };
 
     return getIndex(this.list);
   }
 
   toString() {
-    if (this.#isEmptyList()) return "";
-
-    const getSequence = (list) => {
-      if (!list.nextNode) {
-        return `( ${list.value} ) -> null`;
-      }
+    const getSequence = (list, sequence = "") => {
+      if (this.#isEmptyList()) return sequence;
+      if (!list) return null;
       return `( ${list.value} ) -> ${getSequence(list.nextNode)}`;
     };
 
@@ -128,15 +117,15 @@ export class LinkedList {
     if (targetIndex < 0 || targetIndex > this.size())
       throw new RangeError("Target index is out of bound.");
 
-    if (this.#isEmptyList()) {
-      values.forEach((value) => {
-        this.append(value);
-      });
-      return;
-    }
-
     let currentIndex = 0;
     const goToIndex = (currentNode, previousNode = null) => {
+      if (this.#isEmptyList()) {
+        values.forEach((value) => {
+          this.append(value);
+        });
+        return;
+      }
+      if (!currentNode) return;
       if (currentIndex === targetIndex) {
         let latestNode;
         values.forEach((value) => {
