@@ -110,28 +110,27 @@ export class LinkedList {
     if (targetIndex < 0 || targetIndex > this.size())
       throw new RangeError("Target index is out of bound.");
 
-    let currentIndex = 0;
-    const goToIndex = (currentNode, previousNode = null) => {
-      if (this.#isEmptyList()) {
-        values.forEach((value) => {
-          this.append(value);
-        });
-        return;
-      }
-      if (!currentNode) return;
+    const goToIndex = (currentNode, leftNode = null, currentIndex = 0) => {
       if (currentIndex === targetIndex) {
-        let latestNode;
         values.forEach((value) => {
-          latestNode = new Node(value);
-          previousNode.nextNode = latestNode;
-          previousNode = latestNode;
+          const newNode = new Node(value);
+
+          if (leftNode === null) {
+            this.list = newNode;
+          } else {
+            leftNode.nextNode = newNode;
+          }
+
+          if (currentNode?.value !== null) newNode.nextNode = currentNode;
+
+          leftNode = newNode;
         });
-        latestNode.nextNode = currentNode;
+
         return;
       }
+      if (currentNode === null) return;
 
-      currentIndex += 1;
-      goToIndex(currentNode.nextNode, currentNode);
+      goToIndex(currentNode.nextNode, currentNode, currentIndex + 1);
     };
 
     goToIndex(this.list);

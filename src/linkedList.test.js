@@ -405,7 +405,7 @@ describe("toString method", () => {
   });
 });
 
-describe.skip("insertAt method", () => {
+describe("insertAt method", () => {
   it("insertAt method exists", () => {
     expect(Object.hasOwn(LinkedList.prototype, "insertAt")).toBe(true);
     expect(typeof LinkedList.prototype.insertAt).toBe("function");
