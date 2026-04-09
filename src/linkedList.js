@@ -7,7 +7,6 @@ export class Node {
 
 export class LinkedList {
   list = new Node();
-  #nodes = 0;
 
   #isEmptyList() {
     return this.list.value === null;
@@ -27,26 +26,28 @@ export class LinkedList {
     };
 
     addToEnd(this.list);
-    this.#nodes += 1;
     return this;
   }
 
   prepend(value) {
     if (this.#isEmptyList()) {
       this.list.value = value;
-      this.#nodes = 1;
       return this;
     }
 
     const node = new Node(value, this.list);
     this.list = node;
-    this.#nodes += 1;
 
     return this;
   }
 
   size() {
-    return this.#nodes;
+    const count = (list, size = 0) => {
+      if (this.#isEmptyList()) return size;
+      if (!list) return size;
+      return count(list.nextNode, (size += 1));
+    };
+    return count(this.list);
   }
 
   head() {
@@ -76,7 +77,6 @@ export class LinkedList {
     const hasNextNode = this.list.nextNode !== null;
 
     this.list = hasNextNode ? this.list.nextNode : new Node();
-    this.#nodes -= 1;
 
     return removedNode.value;
   }
