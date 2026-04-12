@@ -75,6 +75,25 @@ describe("append method", () => {
       nextNode: { value: "durian", nextNode: null },
     });
   });
+
+  it("Appends object as node", () => {
+    list.append({ name: "eggplant", color: "purple" });
+
+    expect(list.list).toEqual({
+      value: { name: "eggplant", color: "purple" },
+      nextNode: null,
+    });
+  });
+
+  it("Appends objects as node", () => {
+    list.append({ name: "eggplant", color: "purple" });
+    list.append({ name: "figs", texture: "soft" });
+
+    expect(list.list).toEqual({
+      value: { name: "eggplant", color: "purple" },
+      nextNode: { value: { name: "figs", texture: "soft" }, nextNode: null },
+    });
+  });
 });
 
 describe("prepend method", () => {
