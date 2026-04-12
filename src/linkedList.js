@@ -8,6 +8,29 @@ export class Node {
 export class LinkedList {
   list = new Node();
 
+  #isObject(value) {
+    return typeof value === "object" && value !== null;
+  }
+
+  #areSimilarObjects(obj1, obj2) {
+    if (obj1 === obj2) return true;
+
+    if (Array.isArray(obj1) && Array.isArray(obj2)) {
+      obj1 = [...obj1].sort();
+      obj2 = [...obj2].sort();
+    }
+
+    const keys = Object.keys(obj1);
+
+    for (const k of keys) {
+      if (this.#isObject(obj1[k])) {
+        return this.#areSimilarObjects(obj1[k], obj2[k]);
+      } else if (obj1[k] !== obj2[k]) return false;
+    }
+
+    return true;
+  }
+
   #isEmptyList() {
     return this.list.value === null;
   }
@@ -75,6 +98,9 @@ export class LinkedList {
     const checkList = (list) => {
       if (this.#isEmptyList() || !list) return false;
       if (list.value === searchValue) return true;
+      if (this.#isObject(list.value) && this.#isObject(searchValue)) {
+        return this.#areSimilarObjects(searchValue, list.value);
+      }
       return checkList(list.nextNode);
     };
 
@@ -88,6 +114,12 @@ export class LinkedList {
     const getIndex = (list, currentIndex = 0) => {
       if (this.#isEmptyList() || !list) return -1;
       if (list.value === searchValue) return currentIndex;
+      if (
+        this.#isObject(searchValue) &&
+        this.#areSimilarObjects(searchValue, list.value)
+      ) {
+        return currentIndex;
+      }
       return getIndex(list.nextNode, currentIndex + 1);
     };
 

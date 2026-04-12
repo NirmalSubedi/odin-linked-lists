@@ -316,18 +316,35 @@ describe("contains method", () => {
     expect(list.contains("banana")).toBe(false);
   });
 
-  it("Returns true if array is in list", () => {
-    const array = ["cherry", "tart"];
-    list.prepend(array);
+  it("Returns true if array values match", () => {
+    const array1 = ["cherry", "tart"];
+    const array2 = ["tart", "cherry"];
+    list.prepend(array1);
 
-    expect(list.contains(array)).toBe(true);
+    expect(list.contains(array2)).toBe(true);
   });
 
-  it("Returns true if object is in list", () => {
-    const object = { name: "durian", taste: "creamy" };
-    list.prepend(object);
+  it("Returns true if object values match", () => {
+    const object1 = { name: "durian", taste: "creamy" };
+    const object2 = { taste: "creamy", name: "durian" };
+    list.prepend(object1);
 
-    expect(list.contains(object)).toBe(true);
+    expect(list.contains(object2)).toBe(true);
+  });
+
+  it("Returns true for nested objects", () => {
+    const object1 = {
+      name: "apple",
+      features: { taste: "sweet", texture: "tart" },
+    };
+
+    const object2 = {
+      name: "apple",
+      features: { texture: "tart", taste: "sweet" },
+    };
+    list.prepend(object1);
+
+    expect(list.contains(object2)).toBe(true);
   });
 });
 
@@ -369,6 +386,13 @@ describe("findIndex method", () => {
     list.append("durian");
 
     expect(list.findIndex("durian")).toBe(3);
+  });
+
+  it("Returns index if object values match", () => {
+    list.append({ name: "eggplant", color: "purple" });
+    const object = { color: "purple", name: "eggplant" };
+
+    expect(list.findIndex(object)).toBe(5);
   });
 });
 
