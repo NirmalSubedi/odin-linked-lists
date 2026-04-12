@@ -15,6 +15,8 @@ export class LinkedList {
   #areSimilarObjects(obj1, obj2) {
     if (obj1 === obj2) return true;
 
+    if (!(this.#isObject(obj1) && this.#isObject(obj2))) return false;
+
     if (Array.isArray(obj1) && Array.isArray(obj2)) {
       obj1 = [...obj1].sort();
       obj2 = [...obj2].sort();
@@ -116,6 +118,7 @@ export class LinkedList {
       if (list.value === searchValue) return currentIndex;
       if (
         this.#isObject(searchValue) &&
+        this.#isObject(list.value) &&
         this.#areSimilarObjects(searchValue, list.value)
       ) {
         return currentIndex;
