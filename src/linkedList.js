@@ -34,6 +34,7 @@ export class LinkedList {
   }
 
   #isEmptyList() {
+    if (this.list === null) this.list = new Node();
     return this.list.value === null;
   }
 
